@@ -11,12 +11,12 @@ const validateExamsData = require("../../validation/exams");
 router.post("/create/user", (req, res) => {
   const { question, type, majorId, userId, examStudentAnswer } = req.body;
 
-  // const { errors, isValid } = validateExamData(req.body);
+  const { errors, isValid } = validateExamData(req.body);
 
-  // // Check Validation
-  // if (!isValid) {
-  //   return res.status(400).json(errors);
-  // }
+  // Check Validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
 
   var result;
 
