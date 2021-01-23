@@ -7,6 +7,10 @@ const MajorSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "users",
   },
+  classId: {
+    type: Schema.Types.ObjectId,
+    ref: "kelas",
+  },
   idTeacher: {
     type: Schema.Types.ObjectId,
     ref: "teachers",

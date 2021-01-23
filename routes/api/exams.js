@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+
 const Exams = require("../../models/Exams");
 const validateExamData = require("../../validation/exam");
 const validateExamsData = require("../../validation/exams");
 
-// @route   GET api/
-// @desc
-// @access  public
+// @route   GET api/create/user
+// @desc create user
+// @access  private teacher
 router.post("/create/user", (req, res) => {
   const { question, type, majorId, userId, examStudentAnswer } = req.body;
 
@@ -52,9 +53,9 @@ router.post("/create/user", (req, res) => {
     });
 });
 
-// @route   GET api/
-// @desc
-// @access  public
+// @route   POST api/create
+// @desc create answer
+// @access  private teacher
 router.post("/create", (req, res) => {
   const { question, type, majorId, teacherId, userId } = req.body;
 
@@ -96,9 +97,9 @@ router.post("/create", (req, res) => {
     });
 });
 
-// @route   GET api/
-// @desc
-// @access  public
+// @route   GET api/view/:id
+// @desc view by id
+// @access  private teacher
 router.get("/view/:id", (req, res) => {
   const { id } = req.params;
 
@@ -113,8 +114,8 @@ router.get("/view/:id", (req, res) => {
     });
 });
 
-// @route   GET api/
-// @desc
+// @route   GET api/view/recapitulation/:id
+// @desc view recapitulation
 // @access  public
 router.get("/view/recapitulation/:id", (req, res) => {
   const { id } = req.params;
@@ -138,8 +139,8 @@ router.get("/view/recapitulation/:id", (req, res) => {
     });
 });
 
-// @route   GET api/
-// @desc
+// @route   GET api/view/recapitulation/:id
+// @desc view recapitulation by id
 // @access  public
 router.get("/view/recapitulations/:id", (req, res) => {
   const { id } = req.params;
@@ -157,8 +158,8 @@ router.get("/view/recapitulations/:id", (req, res) => {
     });
 });
 
-// @route   GET api/
-// @desc
+// @route   GET api/view/:id/:userId
+// @desc view by id and userId
 // @access  public
 router.get("/view/:id/:userId", (req, res) => {
   const { id, userId } = req.params;
@@ -174,8 +175,8 @@ router.get("/view/:id/:userId", (req, res) => {
     });
 });
 
-// @route   GET api/
-// @desc
+// @route   GET api/view-exam/:id
+// @desc view exam by id
 // @access  public
 router.get("/view-exam/:id", (req, res) => {
   const { id } = req.params;
@@ -189,14 +190,14 @@ router.get("/view-exam/:id", (req, res) => {
     });
 });
 
-// @route POST api/
-// @desc
+// @route POST api/delete/:id/:type
+// @desc delete by id and type
 // @access  public
 router.post("/delete/:id/:type", (req, res) => {
   const { id, type } = req.params;
 
   Exams.deleteOne({ majorId: id, type })
-    .then((exams) => {
+    .then(() => {
       Exams.find({ majorId: id, userId: "guru" })
         .then((exam) => {
           return res.json(exam);

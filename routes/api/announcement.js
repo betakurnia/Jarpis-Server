@@ -17,7 +17,7 @@ router.get("/view", (req, res) => {
 
 // @route POST api/create
 // @desc create announcement
-// @access  private
+// @access  private admin
 router.post("/create", (req, res) => {
   const { errors, isValid } = validateAnnouncement(req.body);
 
@@ -38,9 +38,9 @@ router.post("/create", (req, res) => {
   });
 });
 
-// @route GET api/update
+// @route POST api/update/:id
 // @desc update announcement
-// @access  private
+// @access  private admin
 router.post("/update/:id", (req, res) => {
   const { title, description } = req.body;
 
@@ -58,23 +58,21 @@ router.post("/update/:id", (req, res) => {
 
 // @route POST api/delete
 // @desc delete announcement
-// @access  private
+// @access  private admin
 router.post("/delete/:id", (req, res) => {
   const { id } = req.params;
-  Announcements.deleteOne({ _id: mongoose.Types.ObjectId(id) }).then(
-    (announcement) => {
-      Announcements.find({})
-        .then((announcements) => {
-          return res.json(announcements);
-        })
-        .catch((err) => console.log(err));
-    }
-  );
+  Announcements.deleteOne({ _id: mongoose.Types.ObjectId(id) }).then(() => {
+    Announcements.find({})
+      .then((announcements) => {
+        return res.json(announcements);
+      })
+      .catch((err) => console.log(err));
+  });
 });
 
-// @route POST api/view/id
-// @desc find by id
-// @access  private
+// @route GET api/view/:id
+// @desc view by id
+// @access  private admin
 router.get("/view/:id", (req, res) => {
   const { id } = req.params;
   Announcements.findById(id)

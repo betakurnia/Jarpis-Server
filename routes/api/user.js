@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const User = require("../../models/User");
-const Present = require("../../models/Present");
+const Presence = require("../../models/Presence");
 const Teacher = require("../../models/Teacher");
 const Admin = require("../../models/Admin");
 const bcrypt = require("bcryptjs");
@@ -14,7 +14,8 @@ const validateRegisterInput = require("../../validation/register");
 // @desc
 // @access  Public
 router.get("/view", (req, res) => {
-  Present.find({})
+  Presence.find({})
+
     .populate("userId", ["name"])
     .populate("majorId", ["majorName"])
     .exec(function (err, user) {
@@ -194,7 +195,7 @@ router.post("/login", (req, res) => {
                 if (myuser.role === "teacher") {
                   payload = {
                     id: myuser._id,
-                    name: myuser.username,
+                    name: myuser.name,
                     role: myuser.role,
                     majorId: myuser.majorId,
                     kelas: myuser.kelas.kelas,
@@ -203,7 +204,7 @@ router.post("/login", (req, res) => {
                 } else if (myuser.role === "siswa") {
                   payload = {
                     id: myuser._id,
-                    name: myuser.username,
+                    name: myuser.name,
                     role: myuser.role,
                     kelas: myuser.kelas.kelas,
                     kelasId: myuser.kelas._id,
@@ -211,7 +212,7 @@ router.post("/login", (req, res) => {
                 } else {
                   payload = {
                     id: myuser._id,
-                    name: myuser.username,
+                    name: myuser.name,
                     role: myuser.role,
                   }; // Create JWT Pa
                 }

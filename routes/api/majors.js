@@ -3,32 +3,35 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const Majors = require("../../models/Majors");
 
-// @route   GET api/
-// @desc
-// @access  public
+// @route   GET api/view
+// @desc view
+// @access  private
 router.get("/view", (req, res) => {
-  // const { kelasId } = req.query;
+  const { kelasId } = req.query;
 
-  Majors.find({}).then((majors) => {
-    return res.json(majors);
-  });
+  if (Boolean(kelasId)) {
+    console.log("");
+    Majors.find({ classId: kelasId })
+      .sort({ date: "1" })
+      .then((majors) => {
+        return res.json(majors);
+      });
+  } else {
+    Majors.find({})
+      .sort({ date: "1" })
+      .then((majors) => {
+        return res.json(majors);
+      });
+  }
 });
 
-// @route   POST api/
+// @route   POST api/vtrsyr
 // @desc
-// @access  public
+// @access  private
 router.post("/create", (req, res) => {
-  const {
-    idUser,
-    idTeacher,
-    majorName,
-    hoursOfSubject,
-    hoursOfSubjectFinish,
-  } = req.body;
+  const { majorName, hoursOfSubject, hoursOfSubjectFinish } = req.body;
 
   const majors = new Majors({
-    // idUser,
-    // idTeacher,
     majorName,
     hoursOfSubject,
     hoursOfSubjectFinish,
@@ -45,9 +48,15 @@ router.post("/create", (req, res) => {
 router.get("/view/:id", (req, res) => {
   const { id } = req.params;
 
-  Majors.findById(id).then((major) => {
-    return res.json(major);
-  });
+  Majors.findById(id)
+    .populate("classId")
+    .exec((err, major) => {
+      if (err) {
+        return res.json(err);
+      }
+
+      return res.json(major);
+    });
 });
 
 // @route   GET api/

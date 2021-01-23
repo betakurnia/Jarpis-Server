@@ -15,9 +15,6 @@ const app = express();
 
 const cors = require("cors");
 
-// file
-const path = require("path");
-
 // DB Config
 const db = process.env.mongoURI || require("./config/keys").mongoURI;
 

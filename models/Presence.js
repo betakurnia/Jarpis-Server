@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // Create Schema
-const PresentSchema = new Schema({
+const PresenceSchema = new Schema({
   majorId: {
     type: Schema.Types.ObjectId,
     ref: "majors",
@@ -21,4 +21,4 @@ const PresentSchema = new Schema({
   },
 });
 
-module.exports = User = mongoose.model("presents", PresentSchema);
+module.exports = User = mongoose.model("presents", PresenceSchema);

@@ -134,8 +134,8 @@ router.post("/create", upload.single("file"), (req, res) => {
             },
           }
         ).then((theory) => {
-          alert("sucess");
-          return res.json(theory);
+          console.log(theory);
+          return res.json({ sucess: true });
         });
       } else {
         const newTheory = new Theorys({
@@ -161,8 +161,8 @@ router.post("/create", upload.single("file"), (req, res) => {
 
 router.get("/download", upload.single("file"), (req, res) => {
   var filePath = path.join(__dirname, `../../${DIR}/${req.query.filename}`);
-  console.log(filePath);
   res.download(filePath);
+  res.json({ sucess: true });
 });
 
 module.exports = router;
